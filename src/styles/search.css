@@ -1,0 +1,131 @@
+/* Search view — styling on top of Bootstrap to match the JourneyAI design */
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+}
+
+.search-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef6ff 0%, #ffffff 100%);
+}
+
+/* ---- Steps indicator ---- */
+.steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 20px;
+  border-radius: 999px;
+  background: #f3f6fb;
+  border: 1px solid #dbe3ef;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -40px;
+  top: 50%;
+  width: 40px;
+  height: 2px;
+  background: #dbe3ef;
+}
+
+.step .step-num {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  font-size: 14px;
+}
+
+.step.active {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.28);
+}
+
+.step.active .step-num {
+  color: #2563eb;
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
+/* ---- Travelers steppers ---- */
+.stepper-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.stepper-btn:hover {
+  color: #2563eb;
+}
+
+/* ---- Budget cards & interest pills (btn-check toggles) ---- */
+.budget-card,
+.interest-pill {
+  border: 2px solid #dbe3ef;
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 800;
+  transition: 0.15s ease;
+}
+
+.budget-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 88px;
+  justify-content: center;
+}
+
+.budget-card .amount {
+  font-size: 20px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.budget-card:hover,
+.interest-pill:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+/* Selected state — light highlight, not a solid fill */
+.budget-radio:checked + .budget-card,
+.interest-check:checked + .interest-pill {
+  border-color: #2563eb;
+  color: #2563eb;
+  background: #eff6ff;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+}
+
+.budget-radio:checked + .budget-card .amount {
+  color: #2563eb;
+}
+
+/* Keep focus rings subtle for the toggle buttons */
+.budget-card:focus,
+.interest-pill:focus {
+  box-shadow: none;
+}
