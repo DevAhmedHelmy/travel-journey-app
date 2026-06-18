@@ -100,69 +100,7 @@ button {
   object-fit: cover;
 }
 
-/* Steps */
-
-.steps {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 54px;
-  margin-bottom: 50px;
-}
-
-.step {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 10px 20px;
-  min-width: 136px;
-  justify-content: center;
-  border-radius: 999px;
-  background: #f3f6fb;
-  border: 1px solid #dbe3ef;
-  color: #64748b;
-  font-weight: 700;
-}
-
-.step:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  right: -55px;
-  top: 50%;
-  width: 55px;
-  height: 2px;
-  background: #dbe3ef;
-}
-
-.step span {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 2px solid #cbd5e1;
-  font-size: 14px;
-}
-
-.step p {
-  margin: 0;
-  font-size: 14px;
-}
-
-.step.active {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  color: #ffffff;
-  border-color: transparent;
-  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.28);
-}
-
-.step.active span {
-  color: var(--primary);
-  background: #ffffff;
-  border-color: #ffffff;
-}
+/* Steps styling lives in search.css (single source of truth). */
 
 /* Hero */
 

@@ -1,6 +1,7 @@
 import {validateTrip} from '../validators/trip.validator.js';
 import { setTrip } from '../store/trip.store.js';
 import { navigateTo } from '../router/router.js';
+import { appHeader } from '../components/header.js';
 const INTERESTS = [
   { value: 'food', label: 'Food', selected: true },
   { value: 'shopping', label: 'Shopping' },
@@ -68,15 +69,7 @@ export function renderSearchView() {
       <div class="card border-0 shadow-lg rounded-4">
         <div class="card-body p-2 p-md-3">
 
-          <!-- Header -->
-          <header class="d-flex align-items-center justify-content-between mb-4">
-            <h2 class="fw-bold text-dark m-0">JourneyAI</h2>
-            <div class="d-flex align-items-center gap-3">
-              <button class="btn btn-light rounded-circle" type="button" aria-label="Toggle theme">☾</button>
-              <img src="/assets/images/avatar.png" alt="User avatar"
-                   class="rounded-circle" width="42" height="42" style="object-fit: cover;" />
-            </div>
-          </header>
+          ${appHeader()}
 
           <!-- Steps -->
           <div class="steps mb-5">
@@ -346,8 +339,7 @@ function setupSubmit(root) {
 
     if (!isValid) return;
     setTrip(trip);
-    navigateTo('/results');
-    // here i want collect data and send it to ai modal i want use geminai
+    navigateTo('/generate'); 
   });
 }
 
