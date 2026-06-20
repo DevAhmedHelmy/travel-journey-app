@@ -1,42 +1,17 @@
-import {validateTrip} from '../validators/trip.validator.js';
+import { validateTrip } from '../validators/trip.validator.js';
 import { setTrip } from '../store/trip.store.js';
 import { navigateTo } from '../router/router.js';
-import { appHeader } from '../components/header.js';
-const INTERESTS = [
-  { value: 'food', label: 'Food', selected: true },
-  { value: 'shopping', label: 'Shopping' },
-  { value: 'museums', label: 'Museums' },
-  { value: 'adventure', label: 'Adventure', selected: true },
-  { value: 'nature', label: 'Nature', selected: true },
-  { value: 'beach', label: 'Beach' },
-  { value: 'history', label: 'History' },
-  { value: 'nightlife', label: 'Nightlife' },
-  { value: 'family-friendly', label: 'Family-friendly' },
-];
+import { appHeader } from '../components/layout/header.component.js';
+import { pageCard } from '../components/ui/card.component.js';
+import { interestsCheckboxGroup } from '../components/form/checkbox-group.component.js';
+import { selectField } from '../components/form/select.component.js';
+import { textFieldWithAddon, dateField } from '../components/form/input.component.js';
 
 const BUDGETS = [
   { value: 'low', label: 'Low', amount: '$' },
   { value: 'medium', label: 'Medium', amount: '$$', selected: true },
   { value: 'luxury', label: 'Luxury', amount: '$$$' },
 ];
-
-function interestsMarkup() {
-  return INTERESTS.map(
-    (item) => `
-      <input
-        type="checkbox"
-        class="btn-check interest-check"
-        id="interest-${item.value}"
-        value="${item.value}"
-        autocomplete="off"
-        ${item.selected ? 'checked' : ''}
-      />
-      <label class="btn interest-pill rounded-pill px-4" for="interest-${item.value}">
-        ${item.label}
-      </label>
-    `
-  ).join('');
-}
 
 function budgetMarkup() {
   return BUDGETS.map(
@@ -64,11 +39,7 @@ export function renderSearchView() {
   const page = document.createElement('main');
   page.className = 'search-page py-3 py-md-4';
 
-  page.innerHTML = `
-    <div class="container" style="max-width: 680px;">
-      <div class="card border-0 shadow-lg rounded-4">
-        <div class="card-body p-2 p-md-3">
-
+  page.innerHTML = pageCard(`
           ${appHeader()}
 
           <!-- Steps -->
@@ -87,30 +58,19 @@ export function renderSearchView() {
           <form class="trip-form" id="tripForm" novalidate>
 
             <!-- Destination -->
-            <div class="mb-4">
-              <label for="destination" class="form-label fw-bold">Destination</label>
-              <div class="input-group input-group-lg">
-                <input type="text" class="form-control" id="destination" name="destination"
-                       placeholder="e.g. Paris, France or Europe" />
-                <span class="input-group-text">📍</span>
-              </div>
-              <div class="field-error text-danger small mt-1" data-error="destination"></div>
-            </div>
+            ${textFieldWithAddon({
+              id: 'destination',
+              label: 'Destination',
+              placeholder: 'e.g. Paris, France or Europe',
+              addon: '📍',
+            })}
 
             <!-- Travel dates -->
             <div class="mb-4">
               <label class="form-label fw-bold">Travel Dates</label>
               <div class="row g-3">
-                <div class="col-md-6">
-                  <label for="startDate" class="form-label small text-secondary">Start Date</label>
-                  <input type="date" class="form-control form-control-lg" id="startDate" name="startDate" />
-                  <div class="field-error text-danger small mt-1" data-error="startDate"></div>
-                </div>
-                <div class="col-md-6">
-                  <label for="endDate" class="form-label small text-secondary">End Date</label>
-                  <input type="date" class="form-control form-control-lg" id="endDate" name="endDate" />
-                  <div class="field-error text-danger small mt-1" data-error="endDate"></div>
-                </div>
+                ${dateField({ id: 'startDate', label: 'Start Date' })}
+                ${dateField({ id: 'endDate', label: 'End Date' })}
               </div>
             </div>
 
@@ -174,7 +134,7 @@ export function renderSearchView() {
                 Interests <span class="text-secondary fw-normal">(Select all that apply)</span>
               </label>
               <div class="d-flex flex-wrap gap-2">
-                ${interestsMarkup()}
+                ${interestsCheckboxGroup()}
               </div>
               <div class="field-error text-danger small mt-1" data-error="interests"></div>
             </div>
@@ -183,44 +143,44 @@ export function renderSearchView() {
             <div class="mb-4">
               <label class="form-label fw-bold">Preferences</label>
               <div class="row g-3">
-                <div class="col-6 col-md-3">
-                  <label for="hotelRating" class="form-label small text-secondary">Hotel Rating</label>
-                  <select id="hotelRating" name="hotelRating" class="form-select">
-                    <option value="3">3 Stars &amp; above</option>
-                    <option value="4" selected>4 Stars &amp; above</option>
-                    <option value="5">5 Stars</option>
-                  </select>
-                  <div class="field-error text-danger small mt-1" data-error="hotelRating"></div>
-                </div>
-                <div class="col-6 col-md-3">
-                  <label for="flightClass" class="form-label small text-secondary">Flight Class</label>
-                  <select id="flightClass" name="flightClass" class="form-select">
-                    <option value="economy" selected>Economy</option>
-                    <option value="premium-economy">Premium Economy</option>
-                    <option value="business">Business</option>
-                    <option value="first">First Class</option>
-                  </select>
-                  <div class="field-error text-danger small mt-1" data-error="flightClass"></div>
-                </div>
-                <div class="col-6 col-md-3">
-                  <label for="weatherPreference" class="form-label small text-secondary">Weather Preference</label>
-                  <select id="weatherPreference" name="weatherPreference" class="form-select">
-                    <option value="warm" selected>Warm</option>
-                    <option value="cold">Cold</option>
-                    <option value="mild">Mild</option>
-                    <option value="any">Any Weather</option>
-                  </select>
-                  <div class="field-error text-danger small mt-1" data-error="weatherPreference"></div>
-                </div>
-                <div class="col-6 col-md-3">
-                  <label for="tripPace" class="form-label small text-secondary">Trip Pace</label>
-                  <select id="tripPace" name="tripPace" class="form-select">
-                    <option value="relaxed">Relaxed</option>
-                    <option value="balanced" selected>Balanced</option>
-                    <option value="busy">Busy</option>
-                  </select>
-                  <div class="field-error text-danger small mt-1" data-error="tripPace"></div>
-                </div>
+                ${selectField({
+                  id: 'hotelRating',
+                  label: 'Hotel Rating',
+                  options: [
+                    { value: '3', label: '3 Stars &amp; above' },
+                    { value: '4', label: '4 Stars &amp; above', selected: true },
+                    { value: '5', label: '5 Stars' },
+                  ],
+                })}
+                ${selectField({
+                  id: 'flightClass',
+                  label: 'Flight Class',
+                  options: [
+                    { value: 'economy', label: 'Economy', selected: true },
+                    { value: 'premium-economy', label: 'Premium Economy' },
+                    { value: 'business', label: 'Business' },
+                    { value: 'first', label: 'First Class' },
+                  ],
+                })}
+                ${selectField({
+                  id: 'weatherPreference',
+                  label: 'Weather Preference',
+                  options: [
+                    { value: 'warm', label: 'Warm', selected: true },
+                    { value: 'cold', label: 'Cold' },
+                    { value: 'mild', label: 'Mild' },
+                    { value: 'any', label: 'Any Weather' },
+                  ],
+                })}
+                ${selectField({
+                  id: 'tripPace',
+                  label: 'Trip Pace',
+                  options: [
+                    { value: 'relaxed', label: 'Relaxed' },
+                    { value: 'balanced', label: 'Balanced', selected: true },
+                    { value: 'busy', label: 'Busy' },
+                  ],
+                })}
               </div>
             </div>
 
@@ -240,11 +200,7 @@ export function renderSearchView() {
               </button>
             </div>
           </form>
-
-        </div>
-      </div>
-    </div>
-  `;
+  `, { maxWidth: 680, bodyClass: 'p-2 p-md-3' });
 
   setupSearchInteractions(page);
 
@@ -339,7 +295,7 @@ function setupSubmit(root) {
 
     if (!isValid) return;
     setTrip(trip);
-    navigateTo('/generate'); 
+    navigateTo('/generate');
   });
 }
 
