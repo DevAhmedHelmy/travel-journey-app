@@ -1,20 +1,17 @@
 // Persists generated trips (trip input + AI plan) in localStorage so the user
 // can revisit them later from the "Saved Trips" page.
 
+import { readJson, writeJson } from '../storage/local-storage.adapter.js';
+
 const STORAGE_KEY = 'journeyai:saved-trips';
 
 function readAll() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+  const parsed = readJson(STORAGE_KEY, []);
+  return Array.isArray(parsed) ? parsed : [];
 }
 
 function writeAll(trips) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(trips));
+  writeJson(STORAGE_KEY, trips);
 }
 
 function makeId() {

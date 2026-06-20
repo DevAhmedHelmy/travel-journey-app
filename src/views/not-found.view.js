@@ -1,14 +1,11 @@
-import { appHeader } from '../components/header.js';
+import { appHeader } from '../components/layout/header.component.js';
+import { pageCard } from '../components/ui/card.component.js';
 
 export function renderNotFoundView() {
   const page = document.createElement('main');
   page.className = 'results-page py-3 py-md-4';
 
-  page.innerHTML = `
-    <div class="container" style="max-width: 680px;">
-      <div class="card border-0 shadow-lg rounded-4">
-        <div class="card-body p-3 p-md-4">
-
+  page.innerHTML = pageCard(`
           ${appHeader()}
 
           <div class="not-found text-center rounded-4 py-5 px-3">
@@ -24,11 +21,7 @@ export function renderNotFoundView() {
               <a href="/saved" data-link class="btn btn-light btn-lg px-4">🧳 My Trips</a>
             </div>
           </div>
-
-        </div>
-      </div>
-    </div>
-  `;
+  `, { maxWidth: 680 });
 
   return page;
 }
